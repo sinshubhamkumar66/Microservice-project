@@ -1,9 +1,6 @@
-server:
-  port: 8081
-
 spring:
   application:
-    name: PRODUCT-SERVICE
+    name: users-service
 
   datasource:
     url: jdbc:mysql://localhost:3306/UserDb
@@ -21,13 +18,16 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
 
-# Uncomment below for Eureka Client setup
-#eureka:
-#  client:
-#    register-with-eureka: true
-#    fetch-registry: true
-#    service-url:
-#      defaultZone: http://localhost:9090/eureka
-#  instance:
-#    prefer-ip-address: true
-#    instance-id: ${spring.application.name}:${server.port}
+  # Uncomment if you want to enable Eureka client
+  #eureka:
+  #  instance:
+  #    prefer-ip-address: true
+  #  client:
+  #    fetch-registry: true
+  #    register-with-eureka: true
+  #    service-url:
+  #      defaultZone: http://localhost:9090/eureka
+
+logging:
+  level:
+    org.springframework.security: DEBUG

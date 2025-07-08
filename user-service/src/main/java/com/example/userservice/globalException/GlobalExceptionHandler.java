@@ -13,7 +13,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> handlResourceNotFound(UserNotFoundException userNotFoundException){
        String message =  userNotFoundException.getMessage();
        ApiResponse apiResponse = ApiResponse.builder().message(message).success(true).status(HttpStatus.NOT_FOUND).build();
-       return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+
+//        ApiResponse response = new ApiResponse.ApiResponseBuilder(userNotFoundException.getMessage())
+//                .setSucess(true)
+//                .setStatus(HttpStatus.NOT_FOUND).build();
+                return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
 }

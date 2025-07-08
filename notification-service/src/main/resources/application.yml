@@ -2,6 +2,8 @@ server:
   port: 8083
 
 spring:
+  config:
+    import: optional:configserver:http://localhost:8888
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -21,3 +23,11 @@ spring:
             value:
               default:
                 type: com.example.notificationservice.dto.NotificationRequest
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:9090/eureka/
+#    fetch-registry: true
+#    register-with-eureka: true
+

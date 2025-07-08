@@ -7,6 +7,9 @@ import com.example.orderservice.payload.NotificationRequest;
 import com.example.orderservice.payload.ProductResponse;
 import com.example.orderservice.producer.OrderProducer;
 import com.example.orderservice.repo.OrderRepository;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ public class OrderService {
     }
 
     @Transactional()
+    @Retry(name = "productRetry", fallbackMethod = "productRetryFallBack")
+    @RateLimiter(name = "productRateLimiter", fallbackMethod = "productRateLimiterFallBack")
     public String placeOrder(Long productId, Integer quantity) {
         ProductResponse product = productClient.getProduct(productId);
 
@@ -51,6 +56,14 @@ public class OrderService {
         notificationRequest.setType("Email");
         orderProducer.sendNotification(notificationRequest);
         return "Order placed successfully!";
+    }
+    public String productRetryFallBack(Long productId, Integer quantity, Exception e) {
+        return "❌ Product Service उपलब्ध नहीं है, कृपया बाद में प्रयास करें।";
+    }
+
+    // Rate Limiter के लिए fallback method
+    public String productRateLimiterFallBack(Long productId, Integer quantity, RequestNotPermitted e) {
+        return "⚠️ बहुत अधिक अनुरोध। कृपया कुछ समय बाद प्रयास करें।";
     }
 
     public List<Order> getAll() {
