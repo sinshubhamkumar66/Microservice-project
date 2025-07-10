@@ -1,6 +1,7 @@
 package com.example.productservice.controller;
 
 import com.example.productservice.entity.Product;
+import com.example.productservice.payload.ProductResponse;
 import com.example.productservice.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ProductResponse getById(@PathVariable Long id) {
+        ProductResponse productResponse = service.getById(id);
+        return productResponse;
     }
 
     @PostMapping

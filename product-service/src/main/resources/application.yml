@@ -20,6 +20,11 @@ spring:
 
   config:
     import: optional:configserver:http://localhost:8888
+  cache:
+    type: redis
+  data:
+    host: redis
+    port: 6379
 
 # Uncomment below for Eureka Client setup
 #eureka:
